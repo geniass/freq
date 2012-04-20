@@ -10,6 +10,14 @@ import sqlite3 as sqlite
 
 class Database:
 
+    def commit(self):
+        if self.con:
+            self.con.commit()
+
+    def close(self):
+        if self.con:
+            self.con.close()
+
     def __init__(self):
         try:
             self.con = sqlite.connect("words.db")
@@ -18,18 +26,11 @@ class Database:
             # Create the table if it doesn't exists
             self.cur.execute(""" CREATE TABLE IF NOT EXISTS words
                                     (word text, frequency real)""")
-            commit()
+            self.commit()
 
         except sqlite.Error, e:
             print e
 
-    def commit(self):
-        if self.con:
-            self.con.commit()
-
-    def close(self):
-        if self.con:
-            self.con.close()
 
 class WordDictionary:
 
