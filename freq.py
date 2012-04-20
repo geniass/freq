@@ -18,14 +18,33 @@ class Database:
         if self.con:
             self.con.close()
 
+    def updateRows(self, dictionary):
+        for k,v in dictionary.iteritems():
+            self.cur.execute("""SELECT * FROM words WHERE word=:select_1""",
+                             {'select_1':k})
+            result = self.cur.fetchone()
+            print result
+            if result:
+                num = result[1] + v
+                self.cur.execute("""UPDATE words SET frequency=:update_1
+                                 WHERE word=:select_1""", {'update_1':num,
+                                                           'select_1':k})
+                self.commit()
+            else:
+                #self.cur.execute("""INSERT INTO words VALUES(?,?)""", (k,v))
+                self.cur.execute("""INSERT INTO words
+                                 VALUES(:insert_1,:insert_2)""",
+                                 {'insert_1':k,'insert_2':v})
+                self.commit()
+
     def __init__(self):
         try:
             self.con = sqlite.connect("words.db")
             self.cur = self.con.cursor()
 
             # Create the table if it doesn't exists
-            self.cur.execute(""" CREATE TABLE IF NOT EXISTS words
-                                    (word text, frequency real)""")
+            self.cur.execute("""CREATE TABLE IF NOT EXISTS words
+                                    (word text, frequency INTEGER)""")
             self.commit()
 
         except sqlite.Error, e:
