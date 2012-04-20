@@ -17,6 +17,10 @@ class Database:
         except sqlite.Error, e:
             print e
 
+    def commit(self):
+        if self.con:
+            self.con.commit()
+
     def close(self):
         if self.con:
             self.con.close()
