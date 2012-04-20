@@ -14,6 +14,12 @@ class Database:
         try:
             self.con = sqlite.connect("words.db")
             self.cur = self.con.cursor()
+
+            # Create the table if it doesn't exists
+            self.cur.execute(""" CREATE TABLE IF NOT EXISTS words
+                                    (word text, frequency real)""")
+            commit()
+
         except sqlite.Error, e:
             print e
 
