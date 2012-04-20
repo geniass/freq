@@ -21,6 +21,19 @@ class Database:
         if self.con:
             self.con.close()
 
+class WordDictionary:
+
+    def __init__(self):
+        self.words = {}
+
+    def addWord(word):
+        key = word.uppercase()          # Maybe convert all words to uppercase?
+        if key in self.words:
+            num = self.words[key] + 1   # increment count for that word
+            self.words[key] = num       # puht it behck!
+        else:                           # new word
+            self.words[key] = 1         # set the count to 1
+
 
 db = Database()
 db.close()
