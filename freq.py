@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*
+# ^ this seems to be how to handle characters like ê and א
 
 import sqlite3 as sqlite
 
