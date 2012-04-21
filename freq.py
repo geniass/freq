@@ -74,5 +74,18 @@ class WordDictionary:
 # Network Interface Code =======================================================
 # ==============================================================================
 
+class Webpage:
+
+    def __init__(self, url=None):
+        self.url = url
+        self.download()
+
+    def download(self):
+        self.f = urllib.urlopen(self.url)
+
+    def html(self):
+        return self.f.read()
+
+
 db = Database()
 db.close()
