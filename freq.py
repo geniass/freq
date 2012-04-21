@@ -6,6 +6,7 @@ import sqlite3 as sqlite
 import urllib
 from xml.dom.minidom import parseString
 from HTMLParser import HTMLParser
+import re
 
 # Constants for indexing the array returned by sqlite to make reading easier
 WORD = 0
@@ -87,10 +88,15 @@ class Article:
         print result
         return result
 
-    def process_text(self):
-        words = self.text.split(" ")
-        for w in words:
-            self.isolate_word(w)
+   # def process_text(self):
+   #     words = self.text.split(" ")
+   #     for w in words:
+   #         self.isolate_word(w)
+    def process_text(self, regex='''([A-Z][a-z]+|[a-z]+)|(’n)'''):
+        #'''([A-Z][a-z]+|[a-z]+)|(’n)'''
+       iterator = re.finditer(regex, self.text)
+       for m in iterator:
+           self.isolate_word(m.group())
 
     def __init__(self, text=""):
         self.text = text
