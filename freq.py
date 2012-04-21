@@ -51,7 +51,11 @@ class Database:
 
 
     # The code for persisting the Key-Value dictionary to disk
+<<<<<<< HEAD
     def update_word_rows(self, dictionary):
+=======
+    def update_rows(self, dictionary):
+>>>>>>> d892249ca28195c37c2f36881e8a57641a71aaca
         for k,v in dictionary.iteritems():
             self.cur.execute("""SELECT * FROM words WHERE word=:select_1""",
                              {'select_1':k})
@@ -74,8 +78,12 @@ class Database:
             self.con = sqlite.connect("words.db")
             self.cur = self.con.cursor()
 
+<<<<<<< HEAD
             # Create the table, if it doesn't exists, to store words and their
             # frequencies
+=======
+            # Create the table if it doesn't exist
+>>>>>>> d892249ca28195c37c2f36881e8a57641a71aaca
             self.cur.execute("""CREATE TABLE IF NOT EXISTS words
                                     (word text, frequency INTEGER)""")
             # Create the table, if it doesn't exist, to store already-scanned urls
@@ -200,12 +208,14 @@ class BeeldPage(HTMLParser):
         self.articleText = ""
         self.words = []
         self.lastTagIsArticle = False
+        # Note this is BLOCKING and must be called LAST
         self.download_and_parse()
 
 def main():
     db = Database()
     wd = WordDictionary()
 
+<<<<<<< HEAD
     url = """http://feeds.beeld.com/articles/Beeld/Tuisblad/rss"""
     w = Beeld(url)
     link = w.links()[3].decode("utf-8")
@@ -224,6 +234,17 @@ def main():
         # Already scanned. Error printed in checkUrlInDB
         pass
     
+=======
+    w = Beeld("http://feeds.beeld.com/articles/Beeld/Tuisblad/rss")
+    link = w.links()[2]
+
+    b = BeeldPage(link)
+    words = b.get_words()
+    for w in words:
+        wd.add_word(w)
+    print wd.words
+
+>>>>>>> d892249ca28195c37c2f36881e8a57641a71aaca
     db.close()
 
 if __name__ == "__main__":
