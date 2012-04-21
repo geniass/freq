@@ -111,26 +111,34 @@ class BeeldPage(HTMLParser):
     def download_and_parse(self):
         self.f = urllib.urlopen(self.url)
         contents = self.f.read()
-        print contents
         self.feed(contents)
         self.close()
+
+    def is_article_body(self, atts):
+        return (atts[0][0] == 'class' and atts[0][1] == 'clr_left')
 
     # Overrride functions
 
     def handle_starttag(self, tag, attrs):
-        pass
+        if (tag == "p" and len(attrs) == 1):
+            if (self.is_article_body(attrs)):
+                self.lastTagIsArticle = True
+            else:
+                self.lastTagIsArticle = False
 
     def handle_endtag(self, tag):
-        pass
+        a = 1
 
     def handle_data(self, data):
-        pass
+        if (self.lastTagIsArticle):
+            print data
 
     # Note HTMLParser is an older class and therefore does not support 'super'
     # syntax
     def __init__(self, url=None):
         HTMLParser.__init__(self)
         self.url = url
+        self.lastTagIsArticle = False
         self.download_and_parse()
 
 db = Database()
