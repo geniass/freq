@@ -80,8 +80,18 @@ class WordDictionary:
 
 class Article:
 
+    def isolate_word(self, word):
+        result = ""
+        for char in word:
+            if ((int(char) >= 97 and int(char) <= 122) or (int(char) >= 65 and int(char) <= 90)):
+                result += char
+        print result
+        return result
+
     def process_text(self):
-        pass
+        words = self.text.split(" ")
+        for w in words:
+            self.isolate_word(w)
 
     def __init__(self, text=""):
         self.text = text
@@ -138,7 +148,7 @@ class BeeldPage(HTMLParser):
     # A: The parser traverses tags and calls these functions when specific
     #    elements are found. Generally it finds a tag (calls handle_starttag)
     #    then handles_data before moving onto the next tag). We set a marker
-    #    after the tag we want (main article) - self.lastTagIsArticle. When the
+    #    after the tag we want (main article) : self.lastTagIsArticle. When the
     #    handle_data function is called and this marker is true, that data is
     #    the actual article.
 
@@ -150,14 +160,16 @@ class BeeldPage(HTMLParser):
                 self.lastTagIsArticle = False
 
     def handle_endtag(self, tag):
-        a = 1
+        if (tag == "html"):
+            a = Article(self.articleText)
+            a.process_text()
 
     def handle_data(self, data):
         if (self.lastTagIsArticle):
-            self.articleText = data
+            self.articleText += data
 
-    # Note HTMLParser is an older class and therefore does not support 'super'
-    # syntax
+    # Note: HTMLParser is an older class and therefore does not support 'super'
+    # syntax.
     def __init__(self, url=None):
         HTMLParser.__init__(self)
         self.url = url
