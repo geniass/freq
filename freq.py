@@ -71,14 +71,15 @@ class WordDictionary:
         self.words = {}
 
     # Creates new or updates old
-    def addWord(word):
-        key = word.uppercase()          # Convert all words to uppercase?
+    def addWord(self, word):
+        key = word.capitalize()          # Capitalize first char of every word
         if key in self.words:
             num = self.words[key] + 1
             self.words[key] = num
         else:                   
             self.words[key] = 1
 
+# TODO: Cleanup
 class Article:
 
     def isolate_word(self, word):
@@ -95,8 +96,10 @@ class Article:
     def process_text(self, regex='''([A-Z][a-z]+|[a-z]+)|(’n)'''):
         #'''([A-Z][a-z]+|[a-z]+)|(’n)'''
        iterator = re.finditer(regex, self.text)
-       for m in iterator:
-           self.isolate_word(m.group())
+       words = [m.group() for m in iterator]
+       return words
+       #for m in iterator:
+       #    self.isolate_word(m.group())
 
     def __init__(self, text=""):
         self.text = text
@@ -147,6 +150,10 @@ class BeeldPage(HTMLParser):
     def is_article_body(self, atts):
         return (atts[0][0] == 'class' and atts[0][1] == 'clr_left')
 
+    # Returns the Page's list-of-words generator
+    def getWords(self):
+        return self.words
+
     # Overrride functions
 
     # Q: What is going on here?
@@ -167,7 +174,9 @@ class BeeldPage(HTMLParser):
     def handle_endtag(self, tag):
         if (tag == "html"):
             a = Article(self.articleText)
-            a.process_text()
+            self.words = a.process_text()
+            for w in self.words:
+                print w
 
     def handle_data(self, data):
         if (self.lastTagIsArticle):
@@ -179,13 +188,25 @@ class BeeldPage(HTMLParser):
         HTMLParser.__init__(self)
         self.url = url
         self.articleText = ""
+        self.words = []
         self.lastTagIsArticle = False
         self.download_and_parse()
 
-db = Database()
-db.close()
+def main():
+    db = Database()
+    wd = WordDictionary()
 
-w = Beeld("http://feeds.beeld.com/articles/Beeld/Tuisblad/rss")
-link = w.links()[2]
+    w = Beeld("http://feeds.beeld.com/articles/Beeld/Tuisblad/rss")
+    link = w.links()[2]
 
-b = BeeldPage(link)
+    b = BeeldPage(link)
+    words = b.getWords()
+    for w in words:
+        wd.addWord(w)
+    print wd.words
+
+
+    db.close()
+
+if __name__ == "__main__":
+    main()
