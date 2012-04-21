@@ -83,8 +83,7 @@ class Article:
     def isolate_word(self, word):
         result = ""
         for char in word:
-            if ((int(char) >= 97 and int(char) <= 122) or (int(char) >= 65 and int(char) <= 90)):
-                result += char
+            result += char
         print result
         return result
 
