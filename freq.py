@@ -4,6 +4,7 @@
 
 import sqlite3 as sqlite
 import urllib
+from xml.dom.minidom import parseString
 
 # Constants for indexing the array returned by sqlite to make reading easier
 WORD = 0
@@ -74,7 +75,7 @@ class WordDictionary:
 # Network Interface Code =======================================================
 # ==============================================================================
 
-class Webpage:
+class Beeld:
 
     def __init__(self, url=None):
         self.url = url
@@ -83,8 +84,19 @@ class Webpage:
     def download(self):
         self.f = urllib.urlopen(self.url)
 
-    def html(self):
+    def contents(self):
         return self.f.read()
+
+    def titles(self):
+        result = []
+        dom = parseString(self.contents())
+        for node in dom.getElementsByTagName('title'):
+            result.append(node.toxml())
+        return result
+            
 
 db = Database()
 db.close()
+
+w = Beeld("http://feeds.beeld.com/articles/Beeld/Tuisblad/rss")
+print w.titles()
