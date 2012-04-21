@@ -86,6 +86,5 @@ class Webpage:
     def html(self):
         return self.f.read()
 
-
 db = Database()
 db.close()
