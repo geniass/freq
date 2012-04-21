@@ -27,7 +27,7 @@ class Database:
             self.con.close()
 
     # The code for persisting the Key-Value dictionary to disk
-    def updateRows(self, dictionary):
+    def update_rows(self, dictionary):
         for k,v in dictionary.iteritems():
             self.cur.execute("""SELECT * FROM words WHERE word=:select_1""",
                              {'select_1':k})
@@ -71,7 +71,7 @@ class WordDictionary:
         self.words = {}
 
     # Creates new or updates old
-    def addWord(self, word):
+    def add_word(self, word):
         key = word.capitalize()          # Capitalize first char of every word
         if key in self.words:
             num = self.words[key] + 1
@@ -137,7 +137,7 @@ class BeeldPage(HTMLParser):
         return (atts[0][0] == 'class' and atts[0][1] == 'clr_left')
 
     # Returns the Page's list-of-words generator
-    def getWords(self):
+    def get_words(self):
         return self.words
 
     # Overrride functions
@@ -187,9 +187,9 @@ def main():
     link = w.links()[2]
 
     b = BeeldPage(link)
-    words = b.getWords()
+    words = b.get_words()
     for w in words:
-        wd.addWord(w)
+        wd.add_word(w)
     print wd.words
 
     db.close()
