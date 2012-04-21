@@ -52,7 +52,7 @@ class Database:
             self.con = sqlite.connect("words.db")
             self.cur = self.con.cursor()
 
-            # Create the table if it doesn't exists
+            # Create the table if it doesn't exist
             self.cur.execute("""CREATE TABLE IF NOT EXISTS words
                                     (word text, frequency INTEGER)""")
             self.commit()
@@ -176,6 +176,7 @@ class BeeldPage(HTMLParser):
         self.articleText = ""
         self.words = []
         self.lastTagIsArticle = False
+        # Note this is BLOCKING and must be called LAST
         self.download_and_parse()
 
 def main():
