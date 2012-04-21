@@ -119,6 +119,14 @@ class BeeldPage(HTMLParser):
 
     # Overrride functions
 
+    # Q: What is going on here?
+    # A: The parser traverses tags and calls these functions when specific
+    #    elements are found. Generally it finds a tag (calls handle_starttag)
+    #    then handles_data before moving onto the next tag). We set a marker
+    #    after the tag we want (main article) - self.lastTagIsArticle. When the
+    #    handle_data function is called and this marker is true, that data is
+    #    the actual article.
+
     def handle_starttag(self, tag, attrs):
         if (tag == "p" and len(attrs) == 1):
             if (self.is_article_body(attrs)):
