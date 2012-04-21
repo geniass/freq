@@ -93,7 +93,7 @@ class Beeld:
         node = doc.documentElement
         titles = doc.getElementsByTagName(elem)
         for t in titles:
-            result.append(t.toxml())
+            result.append(t.firstChild.data)
         return result
 
     def titles(self):
@@ -106,6 +106,5 @@ db = Database()
 db.close()
 
 w = Beeld("http://feeds.beeld.com/articles/Beeld/Tuisblad/rss")
-t = w.titles()
-for ti in t:
-    print ti
+for l in w.links():
+    print l
