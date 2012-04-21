@@ -25,6 +25,7 @@ class Database:
         if self.con:
             self.con.close()
 
+    # The code for persisting the Key-Value dictionary to disk
     def updateRows(self, dictionary):
         for k,v in dictionary.iteritems():
             self.cur.execute("""SELECT * FROM words WHERE word=:select_1""",
@@ -62,11 +63,13 @@ class Database:
 # Text Processing Code =========================================================
 # ==============================================================================
 
+# A singleton object loaded into memory at start up and persisted to disk later
 class WordDictionary:
 
     def __init__(self):
         self.words = {}
 
+    # Creates new or updates old
     def addWord(word):
         key = word.uppercase()          # Convert all words to uppercase?
         if key in self.words:
