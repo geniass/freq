@@ -87,17 +87,25 @@ class Beeld:
     def contents(self):
         return self.f.read()
 
-    def titles(self):
+    def get_elems(self, elem):
         result = []
         doc = parseString(self.contents())
         node = doc.documentElement
-        titles = doc.getElementsByTagName("title")
+        titles = doc.getElementsByTagName(elem)
         for t in titles:
             result.append(t.toxml())
         return result
+
+    def titles(self):
+        return self.get_elems('title')
+
+    def links(self):
+        return self.get_elems('link')
 
 db = Database()
 db.close()
 
 w = Beeld("http://feeds.beeld.com/articles/Beeld/Tuisblad/rss")
-print w.titles()
+t = w.titles()
+for ti in t:
+    print ti
