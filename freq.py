@@ -126,10 +126,6 @@ class BeeldPage(HTMLParser):
     def handle_data(self, data):
         pass
 
-    def handle_data(self, data):
-        print data
-
-
     # Note HTMLParser is an older class and therefore does not support 'super'
     # syntax
     def __init__(self, url=None):
