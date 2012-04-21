@@ -89,11 +89,12 @@ class Beeld:
 
     def titles(self):
         result = []
-        dom = parseString(self.contents())
-        for node in dom.getElementsByTagName('title'):
-            result.append(node.toxml())
+        doc = parseString(self.contents())
+        node = doc.documentElement
+        titles = doc.getElementsByTagName("title")
+        for t in titles:
+            result.append(t.toxml())
         return result
-            
 
 db = Database()
 db.close()
