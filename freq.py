@@ -79,27 +79,13 @@ class WordDictionary:
         else:                   
             self.words[key] = 1
 
-# TODO: Cleanup
 class Article:
 
-    def isolate_word(self, word):
-        result = ""
-        for char in word:
-            result += char
-        print result
-        return result
-
-   # def process_text(self):
-   #     words = self.text.split(" ")
-   #     for w in words:
-   #         self.isolate_word(w)
     def process_text(self, regex='''([A-Z][a-z]+|[a-z]+)|(’n)'''):
         #'''([A-Z][a-z]+|[a-z]+)|(’n)'''
        iterator = re.finditer(regex, self.text)
        words = [m.group() for m in iterator]
        return words
-       #for m in iterator:
-       #    self.isolate_word(m.group())
 
     def __init__(self, text=""):
         self.text = text
@@ -204,7 +190,6 @@ def main():
     for w in words:
         wd.addWord(w)
     print wd.words
-
 
     db.close()
 
