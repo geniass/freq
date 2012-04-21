@@ -58,6 +58,9 @@ class Database:
         except sqlite.Error, e:
             print e
 
+# ==============================================================================
+# Text Processing Code =========================================================
+# ==============================================================================
 
 class WordDictionary:
 
@@ -114,6 +117,7 @@ class BeeldPage(HTMLParser):
         self.feed(contents)
         self.close()
 
+    # The attributes are an array with 1 2-tuple in them
     def is_article_body(self, atts):
         return (atts[0][0] == 'class' and atts[0][1] == 'clr_left')
 
@@ -139,13 +143,14 @@ class BeeldPage(HTMLParser):
 
     def handle_data(self, data):
         if (self.lastTagIsArticle):
-            print data
+            self.articleText = data
 
     # Note HTMLParser is an older class and therefore does not support 'super'
     # syntax
     def __init__(self, url=None):
         HTMLParser.__init__(self)
         self.url = url
+        self.articleText = ""
         self.lastTagIsArticle = False
         self.download_and_parse()
 
