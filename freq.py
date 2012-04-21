@@ -5,6 +5,7 @@
 import sqlite3 as sqlite
 import urllib
 from xml.dom.minidom import parseString
+from HTMLParser import HTMLParser
 
 # Constants for indexing the array returned by sqlite to make reading easier
 WORD = 0
@@ -75,6 +76,8 @@ class WordDictionary:
 # Network Interface Code =======================================================
 # ==============================================================================
 
+# This class downloads the RSS feed at the URl supplied and parses it for its
+# elements
 class Beeld:
 
     def __init__(self, url=None):
@@ -102,9 +105,42 @@ class Beeld:
     def links(self):
         return self.get_elems('link')
 
+# Opens a Beeld Article and extracts the actual text
+class BeeldPage(HTMLParser):
+    
+    def download_and_parse(self):
+        self.f = urllib.urlopen(self.url)
+        contents = self.f.read()
+        print contents
+        self.feed(contents)
+        self.close()
+
+    # Overrride functions
+
+    def handle_starttag(self, tag, attrs):
+        pass
+
+    def handle_endtag(self, tag):
+        pass
+
+    def handle_data(self, data):
+        pass
+
+    def handle_data(self, data):
+        print data
+
+
+    # Note HTMLParser is an older class and therefore does not support 'super'
+    # syntax
+    def __init__(self, url=None):
+        HTMLParser.__init__(self)
+        self.url = url
+        self.download_and_parse()
+
 db = Database()
 db.close()
 
 w = Beeld("http://feeds.beeld.com/articles/Beeld/Tuisblad/rss")
-for l in w.links():
-    print l
+link = w.links()[2]
+
+b = BeeldPage(link)
