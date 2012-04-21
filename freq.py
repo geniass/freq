@@ -3,6 +3,11 @@
 # ^ this seems to be how to handle characters like ê and א
 
 import sqlite3 as sqlite
+import urllib
+
+# Constants for indexing the array returned by sqlite to make reading easier
+WORD = 0
+FREQ = 1
 
 # ==============================================================================
 # Database Interface Code ======================================================
@@ -25,7 +30,7 @@ class Database:
             result = self.cur.fetchone()
             print result
             if result:
-                num = result[1] + v
+                num = result[FREQ] + v
                 self.cur.execute("""UPDATE words SET frequency=:update_1
                                  WHERE word=:select_1""", {'update_1':num,
                                                            'select_1':k})
@@ -39,6 +44,7 @@ class Database:
 
     def __init__(self):
         try:
+            # Notice that this function creates the file if it doesn't exist
             self.con = sqlite.connect("words.db")
             self.cur = self.con.cursor()
 
@@ -64,6 +70,9 @@ class WordDictionary:
         else:                   
             self.words[key] = 1
 
+# ==============================================================================
+# Network Interface Code =======================================================
+# ==============================================================================
 
 db = Database()
 db.close()
