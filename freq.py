@@ -78,6 +78,14 @@ class WordDictionary:
         else:                   
             self.words[key] = 1
 
+class Article:
+
+    def process_text(self):
+        pass
+
+    def __init__(self, text=""):
+        self.text = text
+
 # ==============================================================================
 # Network Interface Code =======================================================
 # ==============================================================================
