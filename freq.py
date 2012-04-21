@@ -57,12 +57,12 @@ class WordDictionary:
         self.words = {}
 
     def addWord(word):
-        key = word.uppercase()          # Maybe convert all words to uppercase?
+        key = word.uppercase()          # Convert all words to uppercase?
         if key in self.words:
-            num = self.words[key] + 1   # increment count for that word
-            self.words[key] = num       # puht it behck!
-        else:                           # new word
-            self.words[key] = 1         # set the count to 1
+            num = self.words[key] + 1
+            self.words[key] = num
+        else:                   
+            self.words[key] = 1
 
 
 db = Database()
